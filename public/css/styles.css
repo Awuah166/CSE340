@@ -12,6 +12,7 @@ body {
   background-image: url('/images/site/checkerboard.jpg');
   margin: 0;
   padding: 20px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 /******* Main Wrapper ***************/
