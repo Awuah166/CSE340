@@ -7,10 +7,10 @@
  *************************/
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
-const env = require("dotenv").config()
+require("dotenv").config()
 const app = express()
-const static = require("./routes/static")
-
+const staticRoutes = require("./routes/static")
+const utilities = require("./utilities/")
 
 /* ***********************
  * View Engine and Templates
@@ -22,7 +22,7 @@ app.set("layout", "./layouts/layout") // not at view roots
 /* ***********************
  * Routes
  *************************/
-app.use(static)
+app.use(staticRoutes)
 
 // Index route
 app.get("/", function(req, res){
@@ -35,6 +35,27 @@ app.get("/", function(req, res){
  *************************/
 const port = process.env.PORT
 const host = process.env.HOST
+
+/* ***********************
+* 404 Error Route
+*************************/
+app.use(async (req, res, next) => {
+  next({status: 404, message: "Sorry, we couldn't find that page."})
+})
+
+/* ***********************
+* Express Error Handler
+* Place after all other middleware
+*************************/
+app.use(async (err, req, res, next) => {
+  let nav = await utilities.getNav()
+  console.error(`Error at:  "${req.originalUrl}": ${err.message}`)
+  res.render("errors/error", {
+    title: err.status || 'Server Error',
+    message: err.message,
+    nav
+  })
+})
 
 /* ***********************
  * Log statement to confirm server operation
