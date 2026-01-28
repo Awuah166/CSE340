@@ -7,10 +7,11 @@
  *************************/
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
-require("dotenv").config()
+const env = require("dotenv").config()
 const app = express()
-const staticRoutes = require("./routes/static")
-const utilities = require("./utilities/")
+const static = require("./routes/static")
+const baseController = require("./controllers/baseController")
+const utilities = require("./utilities")
 
 /* ***********************
  * View Engine and Templates
@@ -22,19 +23,7 @@ app.set("layout", "./layouts/layout") // not at view roots
 /* ***********************
  * Routes
  *************************/
-app.use(staticRoutes)
-
-// Index route
-app.get("/", function(req, res){
-  res.render("index", {title: "Home"})
-})
-
-/* ***********************
- * Local Server Information
- * Values from .env (environment) file
- *************************/
-const port = process.env.PORT
-const host = process.env.HOST
+app.use(static)
 
 /* ***********************
 * 404 Error Route
@@ -42,6 +31,19 @@ const host = process.env.HOST
 app.use(async (req, res, next) => {
   next({status: 404, message: "Sorry, we couldn't find that page."})
 })
+
+// Index route
+app.get("/", function(req, res){
+  res.render("index", {title: "Home"})
+})
+app.get("/",baseController.buildhome)
+
+/* ***********************
+ * Local Server Information
+ * Values from .env (environment) file
+ *************************/
+const port = process.env.PORT
+const host = process.env.HOST
 
 /* ***********************
 * Express Error Handler
