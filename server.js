@@ -11,6 +11,7 @@ const env = require("dotenv").config()
 const app = express()
 const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
+const inventoryRoute = require("./routes/inventoryRoute")
 const utilities = require("./utilities")
 
 /* ***********************
@@ -24,6 +25,15 @@ app.set("layout", "./layouts/layout") // not at view roots
  * Routes
  *************************/
 app.use(static)
+// Inventory Route
+
+app.use("/inv", inventoryRoute)
+
+// Index route
+/***************app.get("/", function(req, res){
+  res.render("index", {title: "Home"})
+})******/
+app.get("/",utilities.handleErrors(baseController.buildHome))
 
 /* ***********************
 * 404 Error Route
@@ -32,18 +42,7 @@ app.use(async (req, res, next) => {
   next({status: 404, message: "Sorry, we couldn't find that page."})
 })
 
-// Index route
-app.get("/", function(req, res){
-  res.render("index", {title: "Home"})
-})
-app.get("/",baseController.buildhome)
 
-/* ***********************
- * Local Server Information
- * Values from .env (environment) file
- *************************/
-const port = process.env.PORT
-const host = process.env.HOST
 
 /* ***********************
 * Express Error Handler
@@ -52,12 +51,23 @@ const host = process.env.HOST
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav()
   console.error(`Error at:  "${req.originalUrl}": ${err.message}`)
+  if (err.status == 404){ message = err.message} else {message = 'Oh no! There was a crush. Myabe try a ddifferent route?'}
   res.render("errors/error", {
     title: err.status || 'Server Error',
     message: err.message,
     nav
   })
 })
+
+
+/* ***********************
+ * Local Server Information
+ * Values from .env (environment) file
+ *************************/
+const port = process.env.PORT
+const host = process.env.HOST
+
+
 
 /* ***********************
  * Log statement to confirm server operation

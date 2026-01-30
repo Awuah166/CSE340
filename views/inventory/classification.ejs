@@ -1,0 +1,10 @@
+<%# Display the page title if it exists %>
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+    res.redirect('/')
+} %>
+
+<%# messages() %>
+
+<%- grid %>

@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title><%= title %></title>
-</head>
-<body>
-    <h1><%= title %></h1>
-    <%# Displaying error message%>
-    <%-message %>
-</body>
-</html>
+<h1><%= title %></h1>
+<p class="error-message">
+    <%= message %>
+</p>
+
+<%# Adding a video to display on error page %>
+<video width="600" autoplay muted loop>
+    <source src="/images/error_video.mp4" type="video/mp4">
+</video>
