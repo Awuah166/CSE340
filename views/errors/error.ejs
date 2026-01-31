@@ -1,9 +1,17 @@
-<h1><%= title %></h1>
-<p class="error-message">
-    <%= message %>
-</p>
+<div class="error-container">
+    <h1><%= title %></h1>
+    <p class="error-message">
+        <%= message %>
+    </p>
 
-<%# Adding a video to display on error page %>
-<video width="600" autoplay muted loop>
-    <source src="/images/error_video.mp4" type="video/mp4">
-</video>
+    <div class="error-details">
+        <h2>What can you do?</h2>
+        <ul>
+            <li>Check the URL for mistakes and try again.</li>
+            <li>Return to the <a href="/">home page</a>.</li>
+            <li>If the problem persists, please contact support.</li>
+    </div>
+</ul>
+
+
+</div>
