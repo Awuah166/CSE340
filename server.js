@@ -15,6 +15,7 @@ const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
 const utilities = require("./utilities")
+const accountRoute = require("./routes/accountRoute")
 
 /* ***********************
 * Middleware
@@ -51,6 +52,9 @@ app.use(static)
 // Inventory Route
 
 app.use("/inv", inventoryRoute)
+
+// Account Route
+app.use("/account", accountRoute)
 
 // Index route
 /***************app.get("/", function(req, res){
