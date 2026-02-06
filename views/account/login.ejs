@@ -9,9 +9,27 @@
     <input type="email" id="account_email" name="account_email" required>
     
     <label for="account_password">Password:</label>
-    <input type="password" id="account_password" name="account_password" required>
+    <div class="password-container">
+        <input type="password" id="account_password" name="account_password" required>
+    </div>
+
+    <button type="button" id="togglePassword" class="toggle-password">Show Password</button>
     
     <button type="submit" class="login-button">Login</button>
 </form>
 
 <p class="register-link">No account? <a href="/account/register">Sign up</a></p>
+
+<script>
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('account_password');
+
+    if (togglePassword && passwordInput) {
+        togglePassword.addEventListener('click', function(e) {
+            e.preventDefault();
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.textContent = type === 'password' ? 'Show Password' : 'Hide Password';
+        });
+    }
+</script>
