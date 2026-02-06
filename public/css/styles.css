@@ -469,8 +469,7 @@ footer .error-link a:hover {
 }
 
 #loginForm input[type="email"],
-#loginForm input[type="password"],
-#loginForm input[type="text"] {
+#loginForm input[type="password"] {
   width: 100%;
   padding: 12px;
   margin-bottom: 20px;
@@ -482,8 +481,7 @@ footer .error-link a:hover {
 }
 
 #loginForm input[type="email"]:focus,
-#loginForm input[type="password"]:focus,
-#loginForm input[type="text"]:focus {
+#loginForm input[type="password"]:focus {
   outline: none;
   border-color: #007BFF;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
@@ -616,8 +614,6 @@ footer .error-link a:hover {
   white-space: nowrap;
   margin-bottom: 20px;
   display: inline-block;
-  min-width: 140px;
-  text-align: center;
 }
 
 .toggle-password:hover {
@@ -831,8 +827,7 @@ footer .error-link a:hover {
   }
 
   #loginForm input[type="email"],
-  #loginForm input[type="password"],
-  #loginForm input[type="text"] {
+  #loginForm input[type="password"] {
     padding: 10px;
     font-size: 14px;
   }
