@@ -523,6 +523,171 @@ footer .error-link a:hover {
   text-decoration: underline;
 }
 
+/******* Registration Form Styles ***************/
+#registrationForm {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 40px;
+  background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+  border: 2px solid #007BFF;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 123, 255, 0.15);
+}
+
+#registrationForm h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 32px;
+}
+
+#registrationForm label {
+  display: block;
+  margin-bottom: 8px;
+  margin-top: 20px;
+  color: #333;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+}
+
+#registrationForm label:first-of-type {
+  margin-top: 0;
+}
+
+#registrationForm input[type="text"],
+#registrationForm input[type="email"],
+#registrationForm input[type="password"] {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 5px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 15px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+#registrationForm input[type="text"]:focus,
+#registrationForm input[type="email"]:focus,
+#registrationForm input[type="password"]:focus {
+  outline: none;
+  border-color: #007BFF;
+  background-color: #f0f8ff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+}
+
+.password-note {
+  display: block;
+  font-size: 13px;
+  color: #666;
+  margin: 10px 0 15px 0;
+  font-style: italic;
+  line-height: 1.6;
+  background-color: #f9f9f9;
+  padding: 12px;
+  border-left: 4px solid #007BFF;
+  border-radius: 4px;
+}
+
+.password-container {
+  margin-bottom: 12px;
+  margin-top: 8px;
+}
+
+.password-container input {
+  width: 100%;
+  padding: 14px;
+}
+
+.toggle-password {
+  background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.toggle-password:hover {
+  background: linear-gradient(135deg, #0056b3 0%, #003d82 100%);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.toggle-password:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+.register-button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 25px;
+  background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+.register-button:hover {
+  background: linear-gradient(135deg, #0056b3 0%, #003d82 100%);
+  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.register-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 15px;
+  color: #666;
+}
+
+.login-link a {
+  color: #007BFF;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.login-link a:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #007BFF;
+  transition: width 0.3s ease;
+}
+
+.login-link a:hover {
+  color: #0056b3;
+}
+
+.login-link a:hover:after {
+  width: 100%;
+}
+
 /* Responsive error page */
 @media (max-width: 768px) {
   .error-container {
@@ -674,6 +839,50 @@ footer .error-link a:hover {
 
   .register-link {
     font-size: 14px;
+  }
+
+  /* Registration Form - Mobile Responsive */
+  #registrationForm {
+    margin: 20px 10px;
+    padding: 25px;
+  }
+
+  #registrationForm label {
+    font-size: 13px;
+    margin-top: 15px;
+  }
+
+  #registrationForm input[type="text"],
+  #registrationForm input[type="email"],
+  #registrationForm input[type="password"] {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .password-note {
+    font-size: 12px;
+    padding: 10px;
+    margin: 8px 0 12px 0;
+  }
+
+  .password-container input {
+    padding: 10px;
+  }
+
+  .toggle-password {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .register-button {
+    padding: 12px;
+    font-size: 15px;
+    margin-top: 20px;
+  }
+
+  .login-link {
+    font-size: 13px;
+    margin-top: 20px;
   }
 }
 
