@@ -22,7 +22,7 @@ async function buildRegister(req, res, next) {
     res.render("account/register", {
         title: "Register",
         nav,
-        error: null
+        errors: null
     })
 }
 
