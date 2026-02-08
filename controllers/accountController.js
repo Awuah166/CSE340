@@ -8,9 +8,12 @@ const accountCont = {}
  * **************/
 async function buildLogin(req, res, next) {
     let nav = await utilities.getNav()
+    const formData = req.flash("formData")[0] || {}
     res.render("account/login", {
         title: "Login",
-        nav
+        nav,
+        errors: null,
+        account_email: formData.account_email || ""
     })
 }
 
@@ -19,10 +22,14 @@ async function buildLogin(req, res, next) {
  * *******************/
 async function buildRegister(req, res, next) {
     let nav = await utilities.getNav()
+    const formData = req.flash("formData")[0] || {}
     res.render("account/register", {
         title: "Register",
         nav,
-        errors: null
+        errors: null,
+        account_firstname: formData.account_firstname || "",
+        account_lastname: formData.account_lastname || "",
+        account_email: formData.account_email || ""
     })
 }
 

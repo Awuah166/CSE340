@@ -15,6 +15,26 @@ body {
   font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
+/******* Flash Message Styles ***************/
+.flash {
+  margin: 15px 0;
+}
+
+.flash .notice,
+.notice {
+  list-style: none;
+  margin: 0 0 15px 0;
+  padding: 10px 14px;
+  border: 1px solid #b91c1c;
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border-radius: 4px;
+}
+
+.flash .notice li {
+  margin: 4px 0;
+}
+
 /******* Main Wrapper ***************/
 #wrapper {
   background-color: white;

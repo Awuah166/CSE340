@@ -1,5 +1,6 @@
 const utilities = require(".") // Requiring the utilities index file to access all utility functions
     const { body, validationResult } = require("express-validator") // Importing express-validator functions for input validation
+    const accountModel = require("../models/account-model")
     const validate = {} // Creating an object to hold validation functions
 
 /********************
@@ -12,6 +13,8 @@ const utilities = require(".") // Requiring the utilities index file to access a
                 .trim()
                 .escape()
                 .notEmpty()
+                .withMessage("Please provide a first name.")
+                .bail()
                 .isLength({ min: 1})
                 .withMessage("Please provide a first name."), // On error this message is sent
 
@@ -20,6 +23,8 @@ const utilities = require(".") // Requiring the utilities index file to access a
                 .trim()
                 .escape()
                 .notEmpty()
+                .withMessage("Please provide a last name.")
+                .bail()
                 .isLength({ min: 2})
                 .withMessage("Please provide a last name."), // On error this message is sent
 
@@ -28,14 +33,24 @@ const utilities = require(".") // Requiring the utilities index file to access a
                 .trim()
                 .escape()
                 .notEmpty()
+                .withMessage("Please provide an email address.")
+                .bail()
                 .isEmail()
-                .normalizeEmail() // refer to validator.js docs
-                .withMessage("Please provide a valid email address."),
+                .withMessage("Please provide a valid email address.")
+                .normalizeEmail()// refer to validator.js docs
+                .custom(async (account_email) => {
+                    const emailExists = await accountModel.checkExistingEmail(account_email)
+                    if (emailExists) {
+                        throw new Error("Email exists. Please log in or use a different email.")
+                    }
+                }),
 
             // Password is required and must meet complexity requirements
             body("account_password")
                 .trim()
                 .notEmpty()
+                .withMessage("Please provide a password.")
+                .bail()
                 .isStrongPassword({
                     minLength: 12,
                     minLowercase: 1,
@@ -47,6 +62,47 @@ const utilities = require(".") // Requiring the utilities index file to access a
         ]
     }
 
+
+/********************
+ * Login Data Validation Rules
+ * ******************/    
+validate.loginRules = () => {
+    return [
+        body("account_email")
+            .trim()
+            .escape()
+            .notEmpty()
+            .withMessage("Please provide an email address.")
+            .bail()
+            .isEmail()
+            .withMessage("Please provide a valid email address.")
+            .normalizeEmail(),
+
+        body("account_password")
+            .trim()
+            .notEmpty()
+            .withMessage("Please provide a password.")
+    ]
+}
+
+/********************
+ * Check data and return errors or continue login process
+ * *******************/
+validate.checkLoginData = async (req, res, next) => {
+    const { account_email } = req.body
+    let errors = []
+    errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        req.flash("notice", errors.array().map((error) => error.msg))
+        req.flash("formData", {
+            account_email,
+        })
+        res.redirect("/account/login")
+        return
+    }
+    next()
+}
+
 /********************
  * Check data and return errors or continue registration
  * ******************/
@@ -55,15 +111,13 @@ const utilities = require(".") // Requiring the utilities index file to access a
         let errors = [] // Initialize an array to hold validation errors
         errors = validationResult(req) // Get validation results from the request
         if (!errors.isEmpty()) {
-            let nav = await utilities.getNav() // Get navigation data for rendering the view
-            res.render("account/register", {
-                errors,
-                tittle: "Registration",
-                nav,
+            req.flash("notice", errors.array().map((error) => error.msg))
+            req.flash("formData", {
                 account_firstname,
                 account_lastname,
                 account_email,
             })
+            res.redirect("/account/register")
             return // Stop further processing if there are validation errors
         }
         next() // If validation passed, proceed to the next middleware or route handler
