@@ -932,10 +932,11 @@ footer .error-link a:hover {
   body {
     background-image: none;
     background-color: white;
+    overflow-x: hidden;
   }
 
   #wrapper {
-    padding: 0;
+    padding: 0 16px;
     border: none;
     box-shadow: none;
   }
@@ -944,11 +945,13 @@ footer .error-link a:hover {
     margin: 0;
     border-radius: 0;
     width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
+
+  nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   /* Add padding back to content areas */
