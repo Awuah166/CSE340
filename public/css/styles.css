@@ -361,6 +361,40 @@ nav ul li:hover {
   color: black;
 }
 
+/******* Inventory Detail Styles ***************/
+.detail-container {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) 2fr;
+  gap: 36px;
+  align-items: start;
+  margin: 20px 0;
+}
+
+.detail-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+  border: 2px solid #ddd;
+}
+
+.detail-info,
+.detail-description {
+  grid-column: 2;
+}
+
+.detail-description {
+  margin-top: 8px;
+}
+
+.detail-info h2 {
+  margin-top: 0;
+}
+
+.detail-description h3 {
+  margin-top: 8px;
+}
+
 
 /******* Error Page Styles ***************/
 .error-container {
@@ -710,6 +744,155 @@ footer .error-link a:hover {
   width: 100%;
 }
 
+/******* Inventory Management Styles ***************/
+.inv-management {
+  margin: 20px 0;
+  padding: 20px;
+}
+
+.inv-management p {
+  margin: 0 0 16px 0;
+  color: #333;
+  font-size: 16px;
+}
+
+.inv-management-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+.inv-management-links li {
+  margin: 0;
+}
+
+.inv-management-links a {
+  display: inline-block;
+  padding: 4px 0;
+  background-color: transparent;
+  color: #007BFF;
+  text-decoration: none;
+  font-weight: 600;
+  border: none;
+  transition: color 0.3s ease, text-decoration-color 0.3s ease;
+}
+
+.inv-management-links a:hover,
+.inv-management-links a:focus {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/******* Add Classification Form Styles ***************/
+.classification-form {
+  max-width: 520px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+}
+
+.classification-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.classification-hint {
+  display: block;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.classification-form input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.classification-form input[type="text"]:focus {
+  outline: none;
+  border-color: #007BFF;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.classification-form button {
+  margin-top: 15px;
+  padding: 10px 14px;
+  background-color:#007BFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.classification-form button:hover {
+  background-color: #0056b3;
+}
+
+/********* Add Inventory Form Styles ***************/
+.inventory-form {
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+}
+
+.inventory-form label {
+  display: block;
+  font-weight: bold;
+  margin: 12px 0 6px 0;
+}
+
+.inventory-form input[type="text"],
+.inventory-form input[type="number"],
+.inventory-form textarea,
+.inventory-form select {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.inventory-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.inventory-form input:focus,
+.inventory-form textarea:focus,
+.inventory-form select:focus {
+  outline: none;
+  border-color: #007BFF;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.inventory-submit {
+  margin-top: 16px;
+  padding: 10px 14px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.inventory-submit:hover {
+  background-color: #0056b3;
+}
+
 /* Responsive error page */
 @media (max-width: 768px) {
   .error-container {
@@ -836,6 +1019,16 @@ footer .error-link a:hover {
   
   #inv-display .namePrice span {
     font-size: 18px;
+  }
+
+  /* Inventory Detail - Stack on Mobile */
+  .detail-container {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-info,
+  .detail-description {
+    grid-column: 1;
   }
 
   /* Login Form - Mobile Responsive */
