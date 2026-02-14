@@ -49,6 +49,27 @@ async function buildAccountManagement(req, res, next) {
 }
 
 /********************
+ * Deliver account update view
+ * *******************/
+async function buildUpdateAccount(req, res, next) {
+    let nav = await utilities.getNav()
+    const account_id = parseInt(req.params.account_id)
+    const accountData = await accountModel.getAccountById(account_id)
+    
+    if (!accountData) {
+        req.flash("notice", "Account not found.")
+        return res.redirect("/account/")
+    }
+
+    res.render("account/update-account", {
+        title: "Update Account Information",
+        nav,
+        errors: null,
+        ...accountData
+    })
+}
+
+/********************
  * Process regitsration form submission
  * ******************/
 async function registerAccount(req, res) {
@@ -137,4 +158,90 @@ async function accountLogin(req, res) {
     }
 }
 
-module.exports = { buildLogin, buildRegister, buildAccountManagement, registerAccount, accountLogin }
+/********************
+ * Process account update
+ * *******************/
+async function updateAccount(req, res) {
+    let nav = await utilities.getNav()
+    const { account_id, account_firstname, account_lastname, account_email } = req.body
+    
+    const updateResult = await accountModel.updateAccount(account_id, account_firstname, account_lastname, account_email)
+    
+    if (updateResult) {
+        // Fetch updated account data
+        const updatedAccount = await accountModel.getAccountById(account_id)
+        req.flash("notice", "Account information updated successfully.")
+        res.render("account/account-management", {
+            title: "Account Management",
+            nav,
+            errors: null,
+            accountData: updatedAccount
+        })
+    } else {
+        const currentAccount = await accountModel.getAccountById(account_id)
+        req.flash("notice", "Sorry, the update failed.")
+        res.status(500).render("account/update-account", {
+            title: "Update Account Information",
+            nav,
+            errors: null,
+            ...currentAccount
+        })
+    }
+}
+
+/********************
+ * Process password change
+ * *******************/
+async function changePassword(req, res) {
+    let nav = await utilities.getNav()
+    const { account_id, account_password } = req.body
+    
+    // Hash the password before storing
+    let hashedPassword
+    try {
+        hashedPassword = await bcrypt.hashSync(account_password, 10)
+    } catch (error) {
+        req.flash("notice", "Sorry, there was an error processing your password change.")
+        const currentAccount = await accountModel.getAccountById(account_id)
+        return res.status(500).render("account/update-account", {
+            title: "Update Account Information",
+            nav,
+            errors: null,
+            ...currentAccount
+        })
+    }
+    
+    const updateResult = await accountModel.updatePassword(account_id, hashedPassword)
+    
+    if (updateResult) {
+        // Fetch updated account data
+        const updatedAccount = await accountModel.getAccountById(account_id)
+        req.flash("notice", "Password changed successfully.")
+        res.render("account/account-management", {
+            title: "Account Management",
+            nav,
+            errors: null,
+            accountData: updatedAccount
+        })
+    } else {
+        const currentAccount = await accountModel.getAccountById(account_id)
+        req.flash("notice", "Sorry, the password change failed.")
+        res.status(500).render("account/update-account", {
+            title: "Update Account Information",
+            nav,
+            errors: null,
+            ...currentAccount
+        })
+    }
+}
+
+/********************
+ * Logout process
+ * *******************/
+async function logout(req, res) {
+    res.clearCookie("jwt")
+    req.flash("notice", "You have been logged out successfully.")
+    res.redirect("/")
+}
+
+module.exports = { buildLogin, buildRegister, buildAccountManagement, buildUpdateAccount, registerAccount, accountLogin, updateAccount, changePassword, logout }

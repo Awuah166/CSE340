@@ -1,0 +1,89 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+<% } %>
+
+<%- messages() %>
+
+<% if (errors) { %>
+    <ul class="notice">
+        <% errors.array().forEach(error => { %>
+            <li><%= error.msg %></li>
+        <% }) %>
+    </ul>
+<% } %>
+
+<div class="account-updates">
+    <section class="update-section">
+        <h2>Account Information</h2>
+        <form id="updateAccountForm" class="account-form" action="/account/update" method="post">
+            <fieldset>
+                <legend>Update Your Account Details</legend>
+                
+                <label for="account_firstname">First Name:</label>
+                <input 
+                    type="text" 
+                    id="account_firstname" 
+                    name="account_firstname" 
+                    required 
+                    value="<%= locals.account_firstname || '' %>">
+                
+                <label for="account_lastname">Last Name:</label>
+                <input 
+                    type="text" 
+                    id="account_lastname" 
+                    name="account_lastname" 
+                    required 
+                    value="<%= locals.account_lastname || '' %>">
+
+                <label for="account_email">Email Address:</label>
+                <input 
+                    type="email" 
+                    id="account_email" 
+                    name="account_email" 
+                    required 
+                    value="<%= locals.account_email || '' %>">
+
+                <button type="submit" class="account-submit">Update Account</button>
+
+                <input type="hidden" name="account_id" value="<%= locals.account_id || '' %>">
+            </fieldset>
+        </form>
+    </section>
+
+    <section class="update-section">
+        <h2>Change Password</h2>
+        <form id="changePasswordForm" class="account-form" action="/account/change-password" method="post">
+            <fieldset>
+                <legend>Update Your Password</legend>
+                
+                <p class="password-info">
+                    <strong>Note:</strong> Entering a new password will replace your current password.
+                </p>
+                
+                <p class="password-requirements">
+                    <strong>Password Requirements:</strong>
+                    <ul>
+                        <li>Minimum 12 characters</li>
+                        <li>At least one uppercase letter (A-Z)</li>
+                        <li>At least one lowercase letter (a-z)</li>
+                        <li>At least one number (0-9)</li>
+                        <li>At least one symbol (!@#$%^&*)</li>
+                    </ul>
+                </p>
+                
+                <label for="account_password">New Password:</label>
+                <input 
+                    type="password" 
+                    id="account_password" 
+                    name="account_password" 
+                    required>
+                
+                <button type="submit" class="account-submit">Change Password</button>
+
+                <input type="hidden" name="account_id" value="<%= locals.account_id || '' %>">
+            </fieldset>
+        </form>
+    </section>
+</div>
+
+<p><a href="/account/">Return to Account Management</a></p>
