@@ -15,10 +15,13 @@ router.get("/add-inventory", utilities.handleErrors(invController.buildAddInvent
 router.get("/", utilities.handleErrors(invController.buildManagement));
 
 // Route to build inventory by classification view
-router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId));
+router.get("/type/:classification_id", utilities.handleErrors(invController.buildByClassificationId));
 
 // Route to build inventory detail view
 router.get("/detail/:invId", utilities.handleErrors(invController.buildInventoryDetail))
+
+// Route to build edit inventory view
+router.get("/edit/:invId", utilities.handleErrors(invController.buildEditInventory))
 
 router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
 

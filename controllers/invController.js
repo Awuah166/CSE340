@@ -125,24 +125,27 @@ invCont.buildByClassificationId = async function (req, res) {
     })
 }
 
-/********************
- * Build inventory detail view
- * ******************/
-invCont.buildInventoryDetail = async function (req, res) {
-    const inv_id = req.params.invId
+/*******************
+ * Build edit inventory view
+ ******************/
+invCont.buildEditInventory = async function (req, res) {
+    const inv_id = parseInt(req.params.invId)
     const vehicle = await invModel.getInventoryById(inv_id)
     let nav = await utilities.getNav()
 
     if (!vehicle) {
         throw new Error("Vehicle not found")
     }
-        const detail = utilities.buildVehicleDetail(vehicle)
 
-        res.render("./inventory/detail", {
-            title: vehicle.inv_make + ' ' + vehicle.inv_model,
-            nav,
-            detail,
-        })
+    const classificationList = await utilities.buildClassificationList(vehicle.classification_id)
+
+    res.render("./inventory/edit-inventory", {
+        title: "Edit " + vehicle.inv_make + " " + vehicle.inv_model,
+        nav, 
+        errors: null,
+        classificationList,
+        ...vehicle
+    })
 }
 
 /********************
@@ -157,5 +160,31 @@ invCont.getInventoryJSON = async function (req, res, next) {
         next(new Error("No data Returned"))
     }
 }
+
+/********************
+ * Build inventory detail view
+ * ******************/
+invCont.buildInventoryDetail = async function (req, res, next) {
+    const inv_id = parseInt(req.params.invId)
+    let nav = await utilities.getNav()
+
+    const vehicle = await invModel.getInventoryById(inv_id)
+
+    if (!vehicle) {
+        throw new Error("Vehicle not found")
+    }
+        const classificationList = await utilities.buildClassificationList(vehicle.classification_id)
+        const name = vehicle.inv_make + " " + vehicle.inv_model
+
+        res.render("./inventory/detail", {
+            title: "Edit" + name,
+            nav,
+            errors: null,
+            classificationList,
+            ...vehicle
+        })
+}
+
+
 
 module.exports = invCont
