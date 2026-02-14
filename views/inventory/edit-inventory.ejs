@@ -12,7 +12,7 @@
     </ul>
 <% } %>
 
-<form id="inventoryForm" class="inventory-form" action="/inv/update" method="post">
+<form id="updateForm" class="inventory-form" action="/inv/update" method="post">
     <label for="inv_make">Make:</label>
     <input type="text" id="inv_make" name="inv_make" required value="<%= locals.inv_make || '' %>">
     
@@ -43,5 +43,11 @@
     <label for="classificationList">Classification:</label>
     <%- classificationList %>
 
-    <button type="submit" class="inventory-submit">Update Vehicle</button>
+    <button type="submit" class="inventory-submit" disabled>Update Vehicle</button>
+
+    <input type="hidden" name="inv_id" 
+    <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+    <% } %>>
 </form>
+
+<script src="/js/inv-update.js"></script>

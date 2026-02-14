@@ -105,4 +105,29 @@ validate.checkInventoryData = async (req, res, next) => {
     next()
 }
 
+// Check data and return errors if any for the edit view
+validate.checkUpdateData = async (req, res, next) => {
+    const { inv_id, inv_make, inv_model } = req.body
+    const errors = validationResult(req)
+    
+    if (!errors.isEmpty()) {
+        let nav = await utilities.getNav()
+        const classificationList = await utilities.buildClassificationList()
+        const name = `${inv_make} ${inv_model}`
+
+        req.flash("notice", errors.array().map((error) => error.msg))
+        req.flash("formData", req.body)
+        res.status(501).render("./inventory/edit-inventory", {
+            title: `Edit ${name}`,
+            nav,
+            classificationList,
+            errors: null,
+            inv_id,
+            ...req.body
+        })
+        return
+    }
+    next()
+}
+
 module.exports = validate

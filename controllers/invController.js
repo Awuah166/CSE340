@@ -173,16 +173,65 @@ invCont.buildInventoryDetail = async function (req, res, next) {
     if (!vehicle) {
         throw new Error("Vehicle not found")
     }
-        const classificationList = await utilities.buildClassificationList(vehicle.classification_id)
-        const name = vehicle.inv_make + " " + vehicle.inv_model
+    
+    const detail = utilities.buildVehicleDetail(vehicle)
+    const name = vehicle.inv_make + " " + vehicle.inv_model
 
-        res.render("./inventory/detail", {
-            title: "Edit" + name,
-            nav,
+    res.render("./inventory/detail", {
+        title: name,
+        nav,
+        detail
+    })
+}
+
+/*********************
+ * Update Inventory Data
+ * ********************/
+invCont.updateInventory = async function (req, res, next) {
+    let nav = await utilities.getNav()
+    const {
+        inv_id,
+        inv_make,
+        inv_model,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_year,
+        inv_miles,
+        inv_color,
+        classification_id
+    } = req.body
+    const updateResult = await invModel.updateInventory(
+        inv_id,
+        inv_make,
+        inv_model,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_year,
+        inv_miles,
+        inv_color,
+        classification_id
+    )
+
+    if (updateResult) {
+        const name = updateResult.inv_make + " " + updateResult.inv_model
+        req.flash("notice", `The ${name} was successfully updated.`)
+        res.redirect("/inv/")
+    } else {
+        const classificationList = await utilities.buildClassificationList(classification_id)
+        const name = `${inv_make} ${inv_model}`
+        req.flash("notice", "Sorry, the insert failed.")
+        res.status(501).render("inventory/edit-inventory", {
+            title: "Edit " + name,
+            nav, 
             errors: null,
             classificationList,
-            ...vehicle
+            ...req.body
         })
+    }
 }
 
 
