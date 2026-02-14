@@ -784,6 +784,49 @@ footer .error-link a:hover {
   text-decoration: underline;
 }
 
+.inv-management #inventoryDisplay {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  background-color: #ffffff;
+  border: 1px solid #d8dde3;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.inv-management #inventoryDisplay thead th {
+  text-align: left;
+  padding: 12px 14px;
+  background-color: #f1f5f9;
+  color: #1f2933;
+  font-weight: 700;
+  border-bottom: 2px solid #cbd5e1;
+}
+
+.inv-management #inventoryDisplay tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #1f2933;
+}
+
+.inv-management #inventoryDisplay tbody tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+.inv-management #inventoryDisplay tbody tr:hover {
+  background-color: #eef6ff;
+}
+
+.inv-management #inventoryDisplay a {
+  color: #0056b3;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.inv-management #inventoryDisplay a:hover,
+.inv-management #inventoryDisplay a:focus {
+  text-decoration: underline;
+}
+
 /******* Add Classification Form Styles ***************/
 .classification-form {
   max-width: 520px;
