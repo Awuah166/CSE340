@@ -234,6 +234,56 @@ invCont.updateInventory = async function (req, res, next) {
     }
 }
 
+/*****************
+  * Delete inventory Data
+  *******************/
+ invCont.deleteInventory = async function (req, res, next) {
+    let nav = await utilities.getNav()
+    const inv_id = parseInt(req.body.inv_id)
+    const deleteResult = await invModel.deleteInventory(inv_id)
 
+    if (deleteResult) {
+        const name = deleteResult.inv_make + " " + deleteResult.inv_model
+        req.flash("notice", `The ${name} was successfully deleted.`)
+        res.redirect("/inv/")
+    } else {
+        const vehicle = await invModel.getInventoryById(inv_id)
+        if (!vehicle) {
+            throw new Error("Vehicle not found")
+        }
+        const name = vehicle.inv_make + " " + vehicle.inv_model
+        req.flash("notice", "Sorry, the delete failed.")
+        res.status(500).render("./inventory/delete-confirm", {
+            title: "Delete " + name,
+            nav,
+            errors: null,
+            ...vehicle
+        })
+    }
+}
+
+/****************
+ * Build delete confirmation view
+ * ****************/
+ invCont.buildDeleteInventory = async function (req, res, next) {
+    const inv_id = parseInt(req.params.invId)
+    const vehicle = await invModel.getInventoryById(inv_id)
+    let nav = await utilities.getNav()
+
+    if (!vehicle) {
+        throw new Error("Vehicle not found")
+    }
+
+    const name = vehicle.inv_make + " " + vehicle.inv_model
+
+    res.render("./inventory/delete-confirm", {
+        title: "Delete " + name,
+        nav,
+        errors: null,
+        ...vehicle
+    })
+ }
+
+ 
 
 module.exports = invCont
