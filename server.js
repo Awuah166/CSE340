@@ -22,12 +22,17 @@ const cookieParser = require("cookie-parser")
 /* ***********************
 * Middleware
 *************************/
+const sessionSecret = process.env.SESSION_SECRET
+if (!sessionSecret && process.env.NODE_ENV === "production") {
+  throw new Error("SESSION_SECRET must be set in production")
+}
+
 app.use(session({
   store: new (require('connect-pg-simple') (session)) ({
     createTableIfMissing: true,
     pool,
   }),
-  secret: process.env.SESSION_SECRET,
+  secret: sessionSecret || "dev-only-session-secret",
   resave: true,
   saveUninitialized: true,
   name: 'sessionId',
@@ -113,8 +118,8 @@ app.use(async (err, req, res, next) => {
  * Local Server Information
  * Values from .env (environment) file
  *************************/
-const port = process.env.PORT
-const host = process.env.HOST
+const port = process.env.PORT || 5500
+const host = process.env.HOST || "0.0.0.0"
 
 
 
