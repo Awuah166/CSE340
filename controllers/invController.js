@@ -291,6 +291,28 @@ invCont.updateInventory = async function (req, res, next) {
     })
  }
 
- 
+/*********************
+ * Build analytics dashboard
+ * *********************/
+invCont.buildAnalyticsDashboard = async function (req, res, next) {
+    try {
+        let nav = await utilities.getNav()
+        const analytics = await invModel.getInventoryAnalytics()
 
+        if (!analytics) {
+            throw new Error("Unable to retrieve analytics data")
+        }
+
+        res.render("./inventory/analytics", {
+            title: "Inventory Analytics Dashboard",
+            nav,
+            errors: null,
+            analytics
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+module.exports = invCont
 module.exports = invCont

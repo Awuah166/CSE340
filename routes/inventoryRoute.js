@@ -11,6 +11,9 @@ router.get("/add-classification", utilities.checkJWTToken, utilities.checkAuthor
 // Route to build add inventory view
 router.get("/add-inventory", utilities.checkJWTToken, utilities.checkAuthorization, utilities.handleErrors(invController.buildAddInventory))
 
+// Route to build analytics dashboard
+router.get("/analytics/dashboard", utilities.checkJWTToken, utilities.checkAuthorization, utilities.handleErrors(invController.buildAnalyticsDashboard))
+
 // Route to build inventory management view
 router.get("/", utilities.checkJWTToken, utilities.checkAuthorization, utilities.handleErrors(invController.buildManagement));
 

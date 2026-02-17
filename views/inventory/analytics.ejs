@@ -1,0 +1,132 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+<% } %>
+
+<%- messages() %>
+
+<% if (errors) { %>
+    <ul class="notice">
+        <% errors.array().forEach(error => { %>
+            <li><%= error.msg %></li>
+        <% }) %>
+    </ul>
+<% } %>
+
+<div class="analytics-dashboard">
+    
+    <!-- Key Metrics Section -->
+    <section class="metrics-grid">
+        <div class="metric-card">
+            <h3>Total Vehicles</h3>
+            <div class="metric-value"><%= analytics.totalVehicles %></div>
+            <p class="metric-label">in inventory</p>
+        </div>
+
+        <div class="metric-card">
+            <h3>Total Inventory Value</h3>
+            <div class="metric-value">$<%= new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(analytics.totalValue) %></div>
+            <p class="metric-label">combined value</p>
+        </div>
+
+        <div class="metric-card">
+            <h3>Average Price</h3>
+            <div class="metric-value">$<%= new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(analytics.priceStats.avg_price) %></div>
+            <p class="metric-label">per vehicle</p>
+        </div>
+
+        <div class="metric-card">
+            <h3>Average Mileage</h3>
+            <div class="metric-value"><%= new Intl.NumberFormat('en-US').format(analytics.averageMiles) %></div>
+            <p class="metric-label">miles</p>
+        </div>
+    </section>
+
+    <!-- Price Range Section -->
+    <section class="info-section">
+        <h2>Price Range Analysis</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <h4>Lowest Price</h4>
+                <p class="info-value">$<%= new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(analytics.priceStats.min_price) %></p>
+            </div>
+            <div class="info-item">
+                <h4>Highest Price</h4>
+                <p class="info-value">$<%= new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(analytics.priceStats.max_price) %></p>
+            </div>
+            <div class="info-item">
+                <h4>Price Difference</h4>
+                <p class="info-value">$<%= new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(analytics.priceStats.max_price - analytics.priceStats.min_price) %></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vehicles by Classification Section -->
+    <section class="info-section">
+        <h2>Vehicles by Classification</h2>
+        <table class="analytics-table">
+            <thead>
+                <tr>
+                    <th>Classification</th>
+                    <th>Count</th>
+                    <th>Percentage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% analytics.vehiclesByClassification.forEach(item => { %>
+                    <tr>
+                        <td><%= item.classification_name %></td>
+                        <td class="count"><%= item.count %></td>
+                        <td class="percentage"><%= ((item.count / analytics.totalVehicles) * 100).toFixed(1) %>%</td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Most Common Make Section -->
+    <section class="info-section">
+        <h2>Most Common Make</h2>
+        <div class="highlight-box">
+            <p class="highlight-value"><%= analytics.mostCommonMake.inv_make %></p>
+            <p class="highlight-label">
+                We have <strong><%= analytics.mostCommonMake.count %></strong> 
+                <%= analytics.mostCommonMake.count === 1 ? 'vehicle' : 'vehicles' %> of this make in stock
+                (<%= ((analytics.mostCommonMake.count / analytics.totalVehicles) * 100).toFixed(1) %>% of inventory)
+            </p>
+        </div>
+    </section>
+
+    <!-- Vehicles by Color Section -->
+    <section class="info-section">
+        <h2>Top Colors in Inventory</h2>
+        <div class="color-list">
+            <% analytics.vehiclesByColor.forEach((item, index) => { 
+                let colorValue = item.inv_color.toLowerCase() === 'rust' ? 'rgb(183, 65, 14)' : item.inv_color;
+            %>
+                <div class="color-item">
+                    <div class="color-badge" data-color="<%= colorValue %>"></div>
+                    <div class="color-info">
+                        <h4><%= item.inv_color %></h4>
+                        <p><%= item.count %> vehicle<%= item.count !== 1 ? 's' : '' %></p>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </section>
+
+    <!-- Action Links Section -->
+    <section class="action-section">
+        <a href="/inv/" class="btn btn-primary">Back to Inventory Management</a>
+    </section>
+
+</div>
+
+<script>
+    // Set color badge background colors from data attributes
+    document.querySelectorAll('.color-badge').forEach(badge => {
+        const color = badge.getAttribute('data-color');
+        if (color) {
+            badge.style.backgroundColor = color;
+        }
+    });
+</script>

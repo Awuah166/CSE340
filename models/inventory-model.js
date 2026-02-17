@@ -146,4 +146,75 @@ async function deleteInventory(inv_id) {
     }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, getInventoryById, addClassification, addInventory, updateInventory, deleteInventory};
+/*********************
+ * Get inventory analytics data
+ * *********************/
+async function getInventoryAnalytics() {
+    try {
+        // Total vehicles count
+        const totalVehicles = await pool.query(
+            "SELECT COUNT(*) as total FROM public.inventory"
+        )
+
+        // Vehicles by classification
+        const vehiclesByClassification = await pool.query(
+            `SELECT c.classification_name, COUNT(i.inv_id) as count 
+             FROM public.inventory i
+             JOIN public.classification c ON i.classification_id = c.classification_id
+             GROUP BY c.classification_name
+             ORDER BY c.classification_name`
+        )
+
+        // Price statistics
+        const priceStats = await pool.query(
+            `SELECT 
+                MIN(inv_price)::NUMERIC(10,2) as min_price,
+                MAX(inv_price)::NUMERIC(10,2) as max_price,
+                AVG(inv_price)::NUMERIC(10,2) as avg_price
+             FROM public.inventory`
+        )
+
+        // Average miles
+        const averageMiles = await pool.query(
+            "SELECT AVG(inv_miles)::NUMERIC(10,2) as average_miles FROM public.inventory"
+        )
+
+        // Total inventory value
+        const totalValue = await pool.query(
+            "SELECT SUM(inv_price)::NUMERIC(15,2) as total_value FROM public.inventory"
+        )
+
+        // Most common make
+        const mostCommonMake = await pool.query(
+            `SELECT inv_make, COUNT(*) as count 
+             FROM public.inventory
+             GROUP BY inv_make
+             ORDER BY count DESC
+             LIMIT 1`
+        )
+
+        // Vehicles by color
+        const vehiclesByColor = await pool.query(
+            `SELECT inv_color, COUNT(*) as count 
+             FROM public.inventory
+             GROUP BY inv_color
+             ORDER BY count DESC
+             LIMIT 5`
+        )
+
+        return {
+            totalVehicles: totalVehicles.rows[0].total,
+            vehiclesByClassification: vehiclesByClassification.rows,
+            priceStats: priceStats.rows[0],
+            averageMiles: averageMiles.rows[0].average_miles,
+            totalValue: totalValue.rows[0].total_value,
+            mostCommonMake: mostCommonMake.rows[0],
+            vehiclesByColor: vehiclesByColor.rows
+        }
+    } catch (error) {
+        console.error("analytics error: " + error)
+        return null
+    }
+}
+
+module.exports = {getClassifications, getInventoryByClassificationId, getInventoryById, addClassification, addInventory, updateInventory, deleteInventory, getInventoryAnalytics};
