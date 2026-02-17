@@ -5,24 +5,39 @@
 <%- messages() %>
 
 <section class="inv-management">
-    <p>Use the link below to manage classifications and inventory items</p>
-    <ul class="inv-management-links">
-        <li>
-            <a href="/inv/add-classification" title="Add a new classification">Add New Classification</a>
-        </li>
+    <div class="management-header">
+        <h2>Inventory Management System</h2>
+        <p>Use the links below to manage classifications and inventory items</p>
+    </div>
 
-        <li>
-            <a href="/inv/add-inventory" title="Add a new inventory item">Add New Inventory</a>
-        </li>
-    </ul>
+    <div class="management-actions">
+        <div class="action-card">
+            <h3>Task 2: Add Classifications</h3>
+            <p>Add new vehicle classifications to the system</p>
+            <a href="/inv/add-classification" class="btn btn-primary" title="Add a new classification">Add New Classification</a>
+        </div>
 
-    <h2>Manage Inventory</h2>
-    <p>Choose a classification to see those vehicles</p>
-    
-    <%- classificationSelect %>
+        <div class="action-card">
+            <h3>Task 3: Add Inventory</h3>
+            <p>Add new vehicles to the inventory</p>
+            <a href="/inv/add-inventory" class="btn btn-primary" title="Add a new inventory item">Add New Inventory Item</a>
+        </div>
+    </div>
 
-    <table id="inventoryDisplay"></table>
-    <noscript>JavaScript must be enabled to use this page</noscript>
+    <hr>
+
+    <div class="inventory-management">
+        <h2>Manage Existing Inventory</h2>
+        <p>Select a classification to view and manage vehicles</p>
+        
+        <div class="filter-section">
+            <label for="classificationList">Choose Classification:</label>
+            <%- classificationSelect %>
+        </div>
+
+        <table id="inventoryDisplay" class="inventory-table"></table>
+        <noscript><p class="notice">JavaScript must be enabled to use this feature</p></noscript>
+    </div>
 
     <script src="../../js/inventory.js"></script>
 </section>

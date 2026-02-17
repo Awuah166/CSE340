@@ -12,11 +12,32 @@
     </ul>
 <% } %>
 
+<div class="form-container">
+    <form id="classificationForm" class="classification-form" action="/inv/add-classification" method="post">
+        <fieldset>
+            <legend>New Classification Details</legend>
+            
+            <div class="form-group">
+                <label for="classification_name">Classification Name *</label>
+                <input 
+                    type="text" 
+                    id="classification_name" 
+                    name="classification_name" 
+                    required 
+                    pattern="^[A-Za-z0-9]+$" 
+                    maxlength="30"
+                    placeholder="e.g., SUV, Sedan, Truck"
+                    value="<%= locals.classification_name || '' %>"
+                    aria-label="Classification name"
+                    aria-required="true"
+                />
+                <span class="form-hint">Letters and numbers only - NO spaces or special characters (max 30 characters)</span>
+            </div>
 
-<form id="classificationForm" class="classification-form" action="/inv/add-classification" method="post">
-    <label for="classification_name">Classification Name</label>
-    <span class="classification-hint">Name must contain only letters and numbers. No special characters or spaces</span>
-
-    <input type="text" id="classification_name" name="classification_name" required pattern="^[A-Za-z0-9]+$" value="<%= locals.classification_name || '' %>"/>
-    <button type="submit" class="classification-submit">Add Classification</button>
-</form>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-submit">Add Classification</button>
+                <a href="/inv/" class="btn btn-cancel">Cancel</a>
+            </div>
+        </fieldset>
+    </form>
+</div>

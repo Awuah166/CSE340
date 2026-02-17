@@ -38,15 +38,18 @@ invCont.addClassification = async function (req, res) {
     const { classification_name } = req.body
     const result = await invModel.addClassification(classification_name)
     let nav = await utilities.getNav()
+    const classificationSelect = await utilities.buildClassificationList()
 
     if (result) {
-        req.flash("notice", "Classification added successfully.")
-        res.render("./inventory/management", {
+        req.flash("notice", `Classification "${classification_name}" added successfully.`)
+        return res.render("./inventory/management", {
             title: "Inventory Management",
-            nav
+            nav,
+            classificationSelect
         })
     } else {
         req.flash("notice", "Sorry, there was an error adding the classification.")
+        req.flash("formData", { classification_name })
         res.status(500).render("./inventory/add-classification", {
             title: "Add Classification",
             nav,
@@ -81,18 +84,22 @@ invCont.buildAddInventory = async function (req, res) {
 invCont.addInventory = async function (req, res) {
     const result = await invModel.addInventory(req.body)
     let nav = await utilities.getNav()
+    const classificationSelect = await utilities.buildClassificationList()
 
     if (result) {
-        req.flash("notice", "Inventory item added successfully")
-        res.render("./inventory/management", {
-            title: "Inventory Management",  
-            nav
+        const vehicleName = `${result.inv_year} ${result.inv_make} ${result.inv_model}`
+        req.flash("notice", `${vehicleName} added successfully to inventory.`)
+        return res.render("./inventory/management", {
+            title: "Inventory Management",
+            nav,
+            classificationSelect
         })
     } else {
         const classificationList = await utilities.buildClassificationList(
             req.body.classification_id || null
         )
         req.flash("notice", "Sorry, the inventory item could not be added.")
+        req.flash("formData", req.body)
         res.status(500).render("./inventory/add-inventory", {
             title: "Add Inventory",
             nav, 

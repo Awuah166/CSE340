@@ -9,7 +9,8 @@ validate.classificationRules = () => {
            .withMessage("Please provide a classification name.")
            .bail()
            .isAlphanumeric("en-US")
-           .withMessage("Classification name must contain only letters and numbers.")
+           .withMessage("Classification name must contain only letters and numbers. No spaces or special characters allowed.")
+           .bail()
            .isLength({ min:1, max: 30})
            .withMessage("Classification name must be between 1 and 30 characters.")
     ]
@@ -33,63 +34,81 @@ validate.inventoryRules = () => {
         body("inv_make")
             .trim()
             .notEmpty()
-            .withMessage("Make is required."),
+            .withMessage("Make is required.")
+            .bail()
+            .isLength({ min: 1, max: 50 })
+            .withMessage("Make must be between 1 and 50 characters."),
         
         body("inv_model")
             .trim()
             .notEmpty()
-            .withMessage("Model is required."),
+            .withMessage("Model is required.")
+            .bail()
+            .isLength({ min: 1, max: 50 })
+            .withMessage("Model must be between 1 and 50 characters."),
 
         body("inv_year")
             .trim()
             .notEmpty()
             .withMessage("Year is required.")
             .bail()
-            .isInt({ min: 1900, max: 2099 })
-            .withMessage("Year must be a 4-digit year"),
+            .isInt({ min: 1900, max: 2100 })
+            .withMessage("Year must be a 4-digit year between 1900 and 2100."),
 
         body("inv_description")
             .trim()
             .notEmpty()
-            .withMessage("Description is required."),
+            .withMessage("Description is required.")
+            .bail()
+            .isLength({ min: 10, max: 1000 })
+            .withMessage("Description must be between 10 and 1000 characters."),
 
         body("inv_image")
             .trim()
             .notEmpty()
-            .withMessage("Image path is required."),
+            .withMessage("Image path is required.")
+            .bail()
+            .matches(/^\/images\//)
+            .withMessage("Image path must be a valid path."),
 
         body("inv_thumbnail")
             .trim()
             .notEmpty()
-            .withMessage("Thumbnail path is required."),
+            .withMessage("Thumbnail path is required.")
+            .bail()
+            .matches(/^\/images\//)
+            .withMessage("Thumbnail path must be a valid path."),
 
         body("inv_price")
             .trim()
             .notEmpty()
             .withMessage("Price is required.")
             .bail()
-            .isInt({ min: 0 })
-            .withMessage("Price must be a whole number."),
+            .isInt({ min: 0, max: 9999999 })
+            .withMessage("Price must be a valid number."),
 
         body("inv_miles")
             .trim()
             .notEmpty()
             .withMessage("Miles is required.")
             .bail()
-            .isInt({ min: 0 })
-            .withMessage("Miles must be a whole number."),
+            .isInt({ min: 0, max: 999999999 })
+            .withMessage("Miles must be a valid number."),
 
         body("inv_color")
             .trim()
             .notEmpty()
-            .withMessage("Color is required."),
+            .withMessage("Color is required.")
+            .bail()
+            .isLength({ min: 1, max: 50 })
+            .withMessage("Color must be between 1 and 50 characters."),
 
         body("classification_id")
         .trim()
         .notEmpty()
         .withMessage("Classification is required.")
         .bail()
-        .isInt()
+        .isInt({ min: 1 })
         .withMessage("Classification must be a valid selection.")
     ]
 }
